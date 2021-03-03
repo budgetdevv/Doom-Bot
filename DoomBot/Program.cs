@@ -24,6 +24,8 @@ namespace DiscordNetTemplate
             public string Path => "Configs/DiscordConfig.json";
             
             public string Token { get; set; }
+            
+            public string Prefix { get; set; }
         }
 
         public static Config<DiscordConf> Config;

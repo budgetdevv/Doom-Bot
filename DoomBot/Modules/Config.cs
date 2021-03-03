@@ -36,12 +36,17 @@ namespace DiscordNetTemplate.Modules
 
         public void UpdateConfig()
         {
-            File.WriteAllText(Conf.Path, JsonSerializer.Serialize(Conf));
+            File.WriteAllText(Conf.Path, JsonSerializer.Serialize(Conf, IConfig.Opt));
         }
     }
 
     public interface IConfig
     {
+        public static readonly JsonSerializerOptions Opt = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+        
         public string Path { get; }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordNetTemplate;
 
 namespace _02_commands_framework.Services
 {
@@ -48,7 +49,7 @@ namespace _02_commands_framework.Services
             
             var ArgPos = 0;
             
-            if (!Message.HasMentionPrefix(_Discord.CurrentUser, ref ArgPos) && !Message.HasStringPrefix("!", ref ArgPos))
+            if (!Message.HasMentionPrefix(_Discord.CurrentUser, ref ArgPos) && !Message.HasStringPrefix(Program.Config.Conf.Prefix, ref ArgPos))
             {
                 return;
             }
