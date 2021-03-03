@@ -16,7 +16,7 @@ namespace DiscordNetTemplate.Modules
         [Command("ping")]
         public Task Ping()
         {
-            _ = ReplyAsync($":ping_pong: | Ping-pong! {Context.Client.Latency}`` ms!");
+            _ = ReplyAsync($":ping_pong: | Ping-pong! `{Context.Client.Latency}` ms!");
 
             return Task.CompletedTask;
         }
