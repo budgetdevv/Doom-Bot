@@ -198,7 +198,7 @@ namespace DiscordNetTemplate.Modules
 
             _ = Channel.AddPermissionOverwriteAsync(Role, new OverwritePermissions(viewChannel: PermValue.Allow));
             
-            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success! !");
+            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success!");
         }
         
         public void Kick(SocketCommandContext Context, SocketGuildUser InvitedUser)
@@ -221,7 +221,7 @@ namespace DiscordNetTemplate.Modules
 
             _ = Channel.RemovePermissionOverwriteAsync(InvitedUser);
             
-            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success! !");
+            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success!");
         }
         
         public void Kick(SocketCommandContext Context, SocketRole Role)
@@ -237,7 +237,7 @@ namespace DiscordNetTemplate.Modules
 
             _ = Channel.RemovePermissionOverwriteAsync(Role);
             
-            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success! !");
+            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success!");
         }
         
         public void Mute(SocketCommandContext Context, SocketGuildUser InvitedUser)
@@ -260,7 +260,7 @@ namespace DiscordNetTemplate.Modules
 
             _ = Channel.AddPermissionOverwriteAsync(InvitedUser, new OverwritePermissions(viewChannel: PermValue.Allow, sendMessages: PermValue.Deny, sendTTSMessages: PermValue.Deny));
             
-            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success! !");
+            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success!");
         }
         
         public void Mute(SocketCommandContext Context, SocketRole Role)

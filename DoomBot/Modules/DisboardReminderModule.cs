@@ -72,7 +72,7 @@ namespace DoomBot.Modules
 
             var TheoreticalNextBump = DateTime.UtcNow + TimeSpan.FromMinutes(Mins);
 
-            if (TheoreticalNextBump < NextBump) //If someone had a global-cooldown of 30 mins, and their timing got registered
+            if (NextBump == DateTime.MinValue || TheoreticalNextBump < NextBump) //If someone had a global-cooldown of 30 mins, and their timing got registered
             {
                 NextBump = TheoreticalNextBump;
             }
