@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordNetTemplate.Modules;
 using Newtonsoft.Json;
 
-namespace DiscordNetTemplate.Modules
+namespace DoomBot.Modules
 {
     public class DisboardReminderModule: IDisposable
     {
@@ -57,7 +58,7 @@ namespace DiscordNetTemplate.Modules
 
                 return Task.CompletedTask;
             }
-            
+
             var Str = Msg.Embeds.First().Description;
 
             var Match = Regex.Match(Str, @"(\d+)\sminutes");
@@ -69,7 +70,12 @@ namespace DiscordNetTemplate.Modules
 
             var Mins = int.Parse(Match.Groups[1].Value);
 
-            NextBump = DateTime.UtcNow + TimeSpan.FromMinutes(Mins);
+            var TheoreticalNextBump = DateTime.UtcNow + TimeSpan.FromMinutes(Mins);
+
+            if (TheoreticalNextBump < NextBump) //If someone had a global-cooldown of 30 mins, and their timing got registered
+            {
+                NextBump = TheoreticalNextBump;
+            }
 
             return Task.CompletedTask;
         }

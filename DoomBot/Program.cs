@@ -9,6 +9,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordNetTemplate.Modules;
+using DoomBot.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordNetTemplate
