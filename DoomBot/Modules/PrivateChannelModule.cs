@@ -276,7 +276,7 @@ namespace DiscordNetTemplate.Modules
 
             _ = Channel.AddPermissionOverwriteAsync(Role, new OverwritePermissions(viewChannel: PermValue.Allow, sendMessages: PermValue.Deny, sendTTSMessages: PermValue.Deny));
             
-            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success! !");
+            _ = Context.Channel.SendMessageAsync(":white_check_mark: | Success!");
         }
 
         public void DestroyAll(SocketCommandContext Context)
