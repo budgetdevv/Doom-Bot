@@ -91,6 +91,7 @@ namespace DoomBot
                 .AddSingleton<HttpClient>()
                 .AddSingleton<PrivateChannelModule>()
                 .AddSingleton<DisboardReminderModule>()
+                .AddSingleton<TempChatModule>()
                 .BuildServiceProvider();
         }
     }
