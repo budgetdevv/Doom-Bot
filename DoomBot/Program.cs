@@ -1,18 +1,17 @@
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using _02_commands_framework.Services;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordNetTemplate.Modules;
 using DoomBot.Modules;
+using DoomBot.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DiscordNetTemplate
+namespace DoomBot
 {
     class Program
     {

@@ -1,8 +1,8 @@
 using System.IO;
 using System.Threading.Tasks;
-using _02_commands_framework.Services;
 using Discord;
 using Discord.Commands;
+using DoomBot;
 
 namespace DiscordNetTemplate.Modules
 {

@@ -1,7 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using _02_commands_framework.Services;
 using Discord;
 using Discord.Commands;
 using Discord.Rest;

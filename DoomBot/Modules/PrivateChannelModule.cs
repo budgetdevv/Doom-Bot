@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Newtonsoft.Json;
+using DiscordNetTemplate.Modules;
 
-namespace DiscordNetTemplate.Modules
+namespace DoomBot.Modules
 {
     public class PrivateChannelModule: IDisposable
     {

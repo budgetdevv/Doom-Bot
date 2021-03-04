@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordNetTemplate.Modules;
-using Newtonsoft.Json;
 
 namespace DoomBot.Modules
 {

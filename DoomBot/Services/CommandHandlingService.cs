@@ -1,13 +1,12 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DiscordNetTemplate;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace _02_commands_framework.Services
+namespace DoomBot.Services
 {
     public class CommandHandlingService
     {
