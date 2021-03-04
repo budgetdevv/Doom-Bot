@@ -26,6 +26,8 @@ namespace DoomBot.Modules
             public string Path => "Configs/DiscordReminderConf.json";
 
             public ulong MentionRoleID { get; set; }
+            
+            public ulong MentionChannelID { get; set; }
         }
 
         private Config<DisboardReminderConfig> Config;
@@ -48,11 +50,21 @@ namespace DoomBot.Modules
                 return Task.CompletedTask;
             }
 
-            var EM = Msg.Embeds.First();
+            if (Msg.Channel is not SocketTextChannel TC)
+            {
+                return Task.CompletedTask;
+            }
 
+            var EM = Msg.Embeds.FirstOrDefault();
+
+            if (EM == default)
+            {
+                return Task.CompletedTask;
+            }
+            
             if (EM.Color == SuccessColor)
             {
-                _ = Countdown(Msg.Channel);
+                _ = Countdown(TC.Guild, BumpDelay);
                 
                 Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Msg.MentionedUsers.First()} ]");
 
@@ -70,9 +82,16 @@ namespace DoomBot.Modules
 
             var Mins = int.Parse(Match.Groups[1].Value);
 
-            var TheoreticalNextBump = DateTime.UtcNow + TimeSpan.FromMinutes(Mins);
+            if (NextBump == DateTime.MinValue)
+            {
+                _ = Countdown(TC.Guild, TimeSpan.FromMinutes(Mins));
 
-            if (NextBump == DateTime.MinValue || TheoreticalNextBump < NextBump) //If someone had a global-cooldown of 30 mins, and their timing got registered
+                return Task.CompletedTask;
+            }
+
+            var TheoreticalNextBump = DateTime.UtcNow + TimeSpan.FromMinutes(Mins);
+            
+            if (TheoreticalNextBump < NextBump) //If someone had a global-cooldown of 30 mins, and their timing got registered
             {
                 NextBump = TheoreticalNextBump;
             }
@@ -80,18 +99,22 @@ namespace DoomBot.Modules
             return Task.CompletedTask;
         }
 
-        private async Task Countdown<ChannelT>(ChannelT Channel) where ChannelT: ISocketMessageChannel
+        private async Task Countdown(SocketGuild Guild, TimeSpan Delay)
         {
-            NextBump = DateTime.UtcNow + BumpDelay;
+            NextBump = DateTime.UtcNow + Delay;
 
-            await Task.Delay(BumpDelay);
+            await Task.Delay(Delay);
 
-            if (NextBump > DateTime.UtcNow)
+            var Diff = NextBump - DateTime.UtcNow;
+
+            while (Diff > TimeSpan.Zero)
             {
-                return;
+                await Task.Delay(Diff);
+                
+                Diff = NextBump - DateTime.UtcNow;
             }
 
-            _ = Channel.SendMessageAsync($"Time to bump, kids! [ <@&{Config.Conf.MentionRoleID}> ]");
+            _ = Guild.GetTextChannel(Config.Conf.MentionChannelID)?.SendMessageAsync($"Time to bump, kids! [ <@&{Config.Conf.MentionRoleID}> ]");
         }
 
         public void SetMentionRole(SocketCommandContext Context, SocketRole Role)
@@ -101,6 +124,15 @@ namespace DoomBot.Modules
             Config.UpdateConfig();
 
             Context.Channel.SendMessageAsync($":white_check_mark: | Success! [ {Role.Mention} ]", false, null, null, AllowedMentions.None);
+        }
+        
+        public void SetMentionChannel(SocketCommandContext Context, SocketTextChannel TC)
+        {
+            Config.Conf.MentionChannelID = TC.Id;
+            
+            Config.UpdateConfig();
+
+            Context.Channel.SendMessageAsync($":white_check_mark: | Success! [ {TC.Mention} ]");
         }
 
         public void Dispose()
@@ -112,7 +144,7 @@ namespace DoomBot.Modules
         {
             if (NextBump == DateTime.MinValue)
             {
-                _ = Context.Channel.SendMessageAsync(":warning: | Bump Time unknown! Do !d bump to register Bump Time!");
+                _ = Context.Channel.SendMessageAsync(":warning: | Bump Time unknown! Do `!d bump` to register Bump Time!");
                 
                 return;
             }

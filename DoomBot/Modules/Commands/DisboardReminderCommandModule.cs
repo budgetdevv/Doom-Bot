@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DoomBot.Modules;
 
-namespace DiscordNetTemplate.Modules.Commands
+namespace DoomBot.Modules.Commands
 {
     // Modules must be public and inherit from an IModuleBase
     public class DisboardReminderCommandModule : ModuleBase<SocketCommandContext>
@@ -31,6 +29,15 @@ namespace DiscordNetTemplate.Modules.Commands
             
             return Task.CompletedTask;
         }
+
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("mentionbumprole")]
+        public Task MentionBumpRole()
+        {
+            Module.ViewBumpRole(Context, true);
+            
+            return Task.CompletedTask;
+        }
         
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("setbumprole")]
@@ -42,10 +49,10 @@ namespace DiscordNetTemplate.Modules.Commands
         }
         
         [RequireUserPermission(GuildPermission.Administrator)]
-        [Command("mentionbumprole")]
-        public Task MentionBumpRole()
+        [Command("setbumpchannel")]
+        public Task SetBumpRole(SocketTextChannel TC)
         {
-            Module.ViewBumpRole(Context, true);
+            Module.SetMentionChannel(Context, TC);
             
             return Task.CompletedTask;
         }
