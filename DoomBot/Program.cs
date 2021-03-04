@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DoomBot
 {
-    class Program
+    public class Program
     {
         static async Task Main(string[] args)
             => await new Program().MainAsync();
