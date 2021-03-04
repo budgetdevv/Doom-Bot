@@ -62,18 +62,18 @@ namespace DoomBot.Modules
                 return Task.CompletedTask;
             }
             
+            var EMDesc = EM.Description;
+
             if (EM.Color == SuccessColor)
             {
                 _ = Countdown(TC.Guild, BumpDelay);
-                
-                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Msg.MentionedUsers.First()} ]");
+
+                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Regex.Match(EMDesc, @"<@(\d+)>").Groups[0]} ]");
 
                 return Task.CompletedTask;
             }
 
-            var Str = Msg.Embeds.First().Description;
-
-            var Match = Regex.Match(Str, @"(\d+)\sminutes");
+            var Match = Regex.Match(EMDesc, @"(\d+)\sminutes");
 
             if (!Match.Success)
             {
