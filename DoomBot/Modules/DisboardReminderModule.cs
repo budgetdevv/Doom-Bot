@@ -64,16 +64,25 @@ namespace DoomBot.Modules
             
             var EMDesc = EM.Description;
 
+            Match Match;
+            
             if (EM.Color == SuccessColor)
             {
+                Match = Regex.Match(EMDesc, @"<@(\d+)>.+(Bump done)");
+                
+                if (!Match.Success)
+                {
+                    return Task.CompletedTask;
+                }
+
                 _ = Countdown(TC.Guild, BumpDelay);
 
-                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Regex.Match(EMDesc, @"<@(\d+)>").Groups[0]} ]");
+                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Match.Groups[0]} ]");
 
                 return Task.CompletedTask;
             }
 
-            var Match = Regex.Match(EMDesc, @"(\d+)\sminutes");
+            Match = Regex.Match(EMDesc, @"(\d+)\sminutes");
 
             if (!Match.Success)
             {
