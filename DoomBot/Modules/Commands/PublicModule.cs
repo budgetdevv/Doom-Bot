@@ -56,7 +56,7 @@ namespace DiscordNetTemplate.Modules
         
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("kick")]
-        public Task Kick(SocketGuildUser TargetUser, string Reason = "No reason given")
+        public Task Kick(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
             var ContextUser = TargetUser.Guild.GetUser(Context.User.Id);
 
@@ -78,7 +78,7 @@ namespace DiscordNetTemplate.Modules
         
         [RequireUserPermission(GuildPermission.Administrator)]
         [Command("ban")]
-        public Task Ban(SocketGuildUser TargetUser, string Reason = "No reason given")
+        public Task Ban(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
             var ContextUser = TargetUser.Guild.GetUser(Context.User.Id);
 

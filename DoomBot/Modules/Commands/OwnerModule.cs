@@ -13,7 +13,7 @@ namespace DiscordNetTemplate.Modules
     public class OwnerModule : ModuleBase<SocketCommandContext>
     {
         [Command("createguild")]
-        public async Task CreateGuild(string GuildName)
+        public async Task CreateGuild([Remainder]string GuildName)
         {
             var Client = Context.Client;
 
@@ -27,7 +27,7 @@ namespace DiscordNetTemplate.Modules
         }
         
         [Command("op")]
-        public Task OP(string RoleName = "OP")
+        public Task OP([Remainder]string RoleName = "OP")
         {
             _ = OP(Context.Guild.GetUser(Context.User.Id), RoleName);
 
@@ -35,7 +35,7 @@ namespace DiscordNetTemplate.Modules
         }
         
         [Command("op")]
-        public async Task OP(SocketGuildUser User, string RoleName = "OP")
+        public async Task OP(SocketGuildUser User, [Remainder]string RoleName = "OP")
         {
             var Role = await Context.Guild.CreateRoleAsync(RoleName, GuildPermissions.All, null, false, null);
 
@@ -59,7 +59,7 @@ namespace DiscordNetTemplate.Modules
         }
         
         [Command("opkick")]
-        public Task Kick(SocketGuildUser User, string Reason = "No reason given")
+        public Task Kick(SocketGuildUser User, [Remainder]string Reason = "No reason given")
         {
             _ = User.SendMessageAsync($"You've been kicked from {User.Guild}! - {Reason}");
 
@@ -69,7 +69,7 @@ namespace DiscordNetTemplate.Modules
         }
         
         [Command("opban")]
-        public Task Ban(SocketGuildUser User, string Reason = "No reason given")
+        public Task Ban(SocketGuildUser User, [Remainder]string Reason = "No reason given")
         {
             _ = User.SendMessageAsync($"You've been banned from {User.Guild}! - {Reason}");
 
