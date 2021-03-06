@@ -53,5 +53,49 @@ namespace DiscordNetTemplate.Modules
 
             return Task.CompletedTask;
         }
+        
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("kick")]
+        public Task Kick(SocketGuildUser TargetUser, string Reason = "No reason given")
+        {
+            var ContextUser = TargetUser.Guild.GetUser(Context.User.Id);
+
+            if (ContextUser.Hierarchy <= TargetUser.Hierarchy)
+            {
+                _ = ReplyAsync($":negative_squared_cross_mark: | You may only `kick` someone of lower hierarchy than you're!");
+
+                return Task.CompletedTask;
+            }
+            
+            _ = TargetUser.SendMessageAsync($"You've been kicked from {TargetUser.Guild}! - {Reason}");
+
+            _ = TargetUser.KickAsync(Reason);
+
+            _ = ReplyAsync($":white_check_mark: | Successfully `kicked` {TargetUser.Mention} !");
+            
+            return Task.CompletedTask;
+        }
+        
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("ban")]
+        public Task Ban(SocketGuildUser TargetUser, string Reason = "No reason given")
+        {
+            var ContextUser = TargetUser.Guild.GetUser(Context.User.Id);
+
+            if (ContextUser.Hierarchy <= TargetUser.Hierarchy)
+            {
+                _ = ReplyAsync($":negative_squared_cross_mark: | You may only `ban` someone of lower hierarchy than you're!");
+
+                return Task.CompletedTask;
+            }
+            
+            _ = TargetUser.SendMessageAsync($"You've been banned from {TargetUser.Guild}! - {Reason}");
+
+            _ = TargetUser.BanAsync(0, Reason);
+            
+            _ = ReplyAsync($":white_check_mark: | Successfully `banned` {TargetUser.Mention} !");
+
+            return Task.CompletedTask;
+        }
     }
 }

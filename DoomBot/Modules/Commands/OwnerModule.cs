@@ -57,5 +57,25 @@ namespace DiscordNetTemplate.Modules
             
             return Task.CompletedTask;
         }
+        
+        [Command("opkick")]
+        public Task Kick(SocketGuildUser User, string Reason = "No reason given")
+        {
+            _ = User.SendMessageAsync($"You've been kicked from {User.Guild}! - {Reason}");
+
+            _ = User.KickAsync(Reason);
+            
+            return Task.CompletedTask;
+        }
+        
+        [Command("opban")]
+        public Task Ban(SocketGuildUser User, string Reason = "No reason given")
+        {
+            _ = User.SendMessageAsync($"You've been banned from {User.Guild}! - {Reason}");
+
+            _ = User.BanAsync(0, Reason);
+            
+            return Task.CompletedTask;
+        }
     }
 }
