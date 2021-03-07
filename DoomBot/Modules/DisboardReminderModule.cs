@@ -68,7 +68,7 @@ namespace DoomBot.Modules
             
             if (EM.Color == SuccessColor)
             {
-                Match = Regex.Match(EMDesc, @"<@(\d+)>.+(Bump done)");
+                Match = Regex.Match(EMDesc, @"<@(\d+)>,\s+(Bump done)");
                 
                 if (!Match.Success)
                 {

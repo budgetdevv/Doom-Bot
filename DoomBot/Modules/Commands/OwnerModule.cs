@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,6 +77,22 @@ namespace DiscordNetTemplate.Modules
             _ = User.BanAsync(0, Reason);
             
             return Task.CompletedTask;
+        }
+        
+        [Command("read")]
+        public async Task Read(ulong MsgID)
+        {
+            var Msg = await Context.Channel.GetMessageAsync(MsgID);
+            
+            _ = ReplyAsync($"`{Msg.Content}`");
+        }
+        
+        [Command("readembed")]
+        public async Task ReadEmbed(ulong MsgID)
+        {
+            var Msg = await Context.Channel.GetMessageAsync(MsgID);
+
+            _ = ReplyAsync($"`{Msg.Embeds.FirstOrDefault()?.Description}`");
         }
     }
 }
