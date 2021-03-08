@@ -68,7 +68,7 @@ namespace DoomBot.Modules
             
             if (EM.Color == SuccessColor)
             {
-                Match = Regex.Match(EMDesc, @"<@(\d+)>,\s+(Bump done)");
+                Match = Regex.Match(EMDesc, @"(?<User><@\d+>),\s+(Bump done)");
                 
                 if (!Match.Success)
                 {
@@ -77,7 +77,7 @@ namespace DoomBot.Modules
 
                 _ = Countdown(TC.Guild, BumpDelay);
 
-                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Match.Groups[0]} ]");
+                Msg.Channel.SendMessageAsync($"Thanks for bumping! [ {Match.Groups["User"].Value} ]");
 
                 return Task.CompletedTask;
             }
