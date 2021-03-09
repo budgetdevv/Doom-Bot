@@ -65,7 +65,7 @@ namespace DoomBot.Modules.Commands
             return Task.CompletedTask;
         }
         
-        [Command("addemoji")]
+        [Command("emojiadd")]
         public async Task AddEmoji([Remainder]string MsgLink)
         {
             var ParsedMsg = await DiscordHelpers.TryParseMessageLinkAsync(Context, MsgLink);
