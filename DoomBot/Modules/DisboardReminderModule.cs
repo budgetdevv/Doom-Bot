@@ -110,7 +110,14 @@ namespace DoomBot.Modules
 
         private async Task Countdown(SocketGuild Guild, TimeSpan Delay)
         {
-            NextBump = DateTime.UtcNow + Delay;
+            var CurrentTime = DateTime.UtcNow;
+
+            if (NextBump > CurrentTime)
+            {
+                return;
+            }
+            
+            NextBump = CurrentTime + Delay;
 
             await Task.Delay(Delay);
 
