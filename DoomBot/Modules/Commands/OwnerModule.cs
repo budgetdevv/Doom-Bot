@@ -60,21 +60,26 @@ namespace DiscordNetTemplate.Modules
         }
         
         [Command("opkick")]
-        public Task Kick(SocketGuildUser User, [Remainder]string Reason = "No reason given")
+        public Task Kick(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
-            _ = User.SendMessageAsync($"You've been kicked from {User.Guild}! - {Reason}");
+            _ = TargetUser.SendMessageAsync($"You've been kicked from {TargetUser.Guild}! - {Reason}");
 
-            _ = User.KickAsync(Reason);
+            _ = TargetUser.KickAsync(Reason);
             
+            _ = ReplyAsync($":white_check_mark: | Successfully `kicked` {TargetUser.Mention} !");
+
             return Task.CompletedTask;
         }
         
         [Command("opban")]
-        public Task Ban(SocketGuildUser User, [Remainder]string Reason = "No reason given")
+        public Task Ban(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
-            _ = User.SendMessageAsync($"You've been banned from {User.Guild}! - {Reason}");
+            _ = TargetUser.SendMessageAsync($"You've been banned from {TargetUser.Guild}! - {Reason}");
 
-            _ = User.BanAsync(0, Reason);
+            _ = TargetUser.BanAsync(0, Reason);
+            
+            _ = ReplyAsync($":white_check_mark: | Successfully `banned` {TargetUser.Mention} !");
+
             
             return Task.CompletedTask;
         }
@@ -93,6 +98,18 @@ namespace DiscordNetTemplate.Modules
             var Msg = await Context.Channel.GetMessageAsync(MsgID);
 
             _ = ReplyAsync($"`{Msg.Embeds.FirstOrDefault()?.Description}`");
+        }
+        
+        [Command("opren")]
+        public Task Rename(SocketGuildUser TargetUser, [Remainder]string NewName = null)
+        {
+            var OldUser = TargetUser.Nickname ?? TargetUser.ToString();
+
+            _ = TargetUser.ModifyAsync(x => x.Nickname = NewName);
+
+            _ = ReplyAsync($":white_check_mark: | Successfully `renamed` {TargetUser.Mention} from {OldUser} !");
+
+            return Task.CompletedTask;
         }
     }
 }
