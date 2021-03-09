@@ -1,47 +1,16 @@
 using System;
-using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DoomBot;
-using DoomBot.Modules;
 
-namespace DiscordNetTemplate.Modules
+namespace DoomBot.Modules.Commands
 {
-    // Modules must be public and inherit from an IModuleBase
-    public class PublicModule : ModuleBase<SocketCommandContext>
+    [RequireUserPermission(GuildPermission.Administrator)]
+    public class AdminModule : ModuleBase<SocketCommandContext>
     {
-        // Dependency Injection will fill this value in for us
-
-        public TempChatModule Module { get; set; }
-        
-        [Command("ping")]
-        public Task Ping()
-        {
-            _ = ReplyAsync($":ping_pong: | Ping-pong! `{Context.Client.Latency}` ms!");
-
-            return Task.CompletedTask;
-        }
-        
-        [Command("tempchat")]
-        public Task TempChat(TimeSpan DeleteIn)
-        {
-            Module.TempChat(Context, Context.User, DeleteIn);
-
-            return Task.CompletedTask;
-        }
-        
-        [RequireUserPermission(GuildPermission.Administrator)]
-        [Command("tempchat")]
-        public Task TempChat(SocketGuildUser User, TimeSpan DeleteIn)
-        {
-            Module.TempChat(Context, User, DeleteIn);
-
-            return Task.CompletedTask;
-        }
-        
-        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("prefix")]
         public Task Prefix(string NewPrefix)
         {
@@ -54,7 +23,6 @@ namespace DiscordNetTemplate.Modules
             return Task.CompletedTask;
         }
         
-        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("kick")]
         public Task Kick(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
@@ -76,7 +44,6 @@ namespace DiscordNetTemplate.Modules
             return Task.CompletedTask;
         }
         
-        [RequireUserPermission(GuildPermission.Administrator)]
         [Command("ban")]
         public Task Ban(SocketGuildUser TargetUser, [Remainder]string Reason = "No reason given")
         {
@@ -96,6 +63,53 @@ namespace DiscordNetTemplate.Modules
             _ = ReplyAsync($":white_check_mark: | Successfully `banned` {TargetUser.Mention} !");
 
             return Task.CompletedTask;
+        }
+        
+        [Command("addemoji")]
+        public async Task AddEmoji([Remainder]string MsgLink)
+        {
+            var ParsedMsg = await DiscordHelpers.TryParseMessageLinkAsync(Context, MsgLink);
+            
+            if (ParsedMsg == null)
+            {
+                _ = Context.Channel.SendMessageAsync(":negative_squared_cross_mark: | Invalid Channel or Message ID!");
+
+                return;
+            }
+
+            var Attachments = ParsedMsg.Attachments;
+            
+            var Msg = await Context.Channel.SendMessageAsync($"<a:Party:816675948250398762> | Adding Emoji(s)... [ `{Attachments.Count}` detected! ]");
+
+            var Guild = Context.Guild;
+
+            using var HC = new HttpClient();
+
+            var Count = 0;
+
+            try
+            {
+                foreach (var Attachment in Attachments)
+                {
+                    var Img = new Image(await HC.GetStreamAsync(Attachment.Url));
+
+                    var Name = Attachment.Filename;
+
+                    DiscordHelpers.RemoveExtensionFromString(ref Name);
+
+                    var Emoji = await Guild.CreateEmoteAsync(Name, Img);
+
+                    if (Emoji != null)
+                    {
+                        Count++;
+                    }
+                }
+            }
+
+            finally
+            {
+                _ = Msg.ModifyAsync(x => x.Content = $"<a:Party:816675948250398762> | Successfully added `{Count}` Emoji(s) !");
+            }
         }
     }
 }
